@@ -1,0 +1,239 @@
+import { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from "react-native";
+import { StatusBar } from "react-native";
+import { Toast } from "toastify-react-native";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebaseconection";
+import RenderListGastos from "../renderListGastos";
+import RenderList from "../renderList";
+
+import { AuthProvider } from "../../contents";
+import { useContext } from "react";
+import { useNavigation } from "@react-navigation/native";
+
+export default function Home() {
+  const { user, LogOut, DeleteItemDastos, DeleteItemReceita } =
+    useContext(AuthProvider);
+
+  const [dados, setDados] = useState("");
+  const [lista, setLista] = useState([]);
+  const [gastos, setGastos] = useState([]);
+
+  async function addReceita() {
+    if (dados === "") {
+      Toast.error("O campo não pode ser vazio!", "Digite algo!");
+      return;
+    }
+
+    try {
+      const data = await addDoc(collection(db, "receita"), {
+        valor: dados,
+      });
+      setDados("");
+      Toast.success("Adicionado com sucesso!");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function addGastos() {
+    if (dados === "") {
+      Toast.error("O campo não pode ser vazio", "Digite algo!");
+      return;
+    }
+
+    try {
+      const data = await addDoc(collection(db, "gastos"), {
+        valor: dados,
+      });
+      setDados("");
+      Toast.success("Adicionado com sucesso!");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    async function Rendle() {
+      const ref = collection(db, "receita");
+
+      getDocs(ref)
+        .then((snapshot) => {
+          let list = [];
+
+          snapshot.forEach((doc) => {
+            list.push({
+              id: doc.id,
+              valor: doc.data().valor,
+            });
+            setLista(list);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    Rendle();
+
+    async function Push() {
+      const ref = collection(db, "gastos");
+
+      getDocs(ref)
+        .then((snapshot) => {
+          let list = [];
+
+          snapshot.forEach((doc) => {
+            list.push({
+              id: doc.id,
+              valor: doc.data().valor,
+            });
+            setGastos(list);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    Push();
+  }, [DeleteReceita, DeleteGastos]);
+
+  async function DeleteReceita() {
+    DeleteItemReceita();
+  }
+
+  async function DeleteGastos() {
+    DeleteItemDastos();
+  }
+
+  async function Sair() {
+    LogOut();
+  }
+
+  return (
+    <SafeAreaView style={s.conteiner}>
+      <StatusBar backgroundColor="blue" />
+
+      <View style={s.header}>
+        <Text style={s.title}>Bem Vindo!</Text>
+      </View>
+
+      <View style={s.area}>
+        <TextInput
+          placeholder="Gastos/Entrada"
+          keyboardType="numeric"
+          value={dados}
+          onChangeText={setDados}
+          style={s.input}
+        />
+
+        <View style={s.areaBnt}>
+          <TouchableOpacity style={s.bnt} onPress={addReceita}>
+            <Text style={s.textbnt}>Entradas</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={s.bnt} onPress={addGastos}>
+            <Text style={s.textbnt}>Gastos</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={s.areaRender}>
+        <FlatList
+          style={s.flat}
+          data={lista}
+          renderItem={({ item }) => <RenderList data={item} />}
+        />
+
+        <FlatList
+          style={s.flat}
+          data={gastos}
+          renderItem={({ item }) => <RenderListGastos data={item} />}
+        />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const s = StyleSheet.create({
+  conteiner: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+  },
+
+  header: {
+    width: "100%",
+    height: 120,
+    backgroundColor: "blue",
+  },
+  title: {
+    fontSize: 25,
+    fontWeight: "700",
+    marginLeft: 20,
+    color: "white",
+    marginTop: 10,
+  },
+  email: {
+    color: "white",
+    marginTop: 10,
+    marginLeft: 20,
+    fontFamily: "Arial",
+  },
+  area: {
+    width: "90%",
+    height: 150,
+    backgroundColor: "blue",
+    marginTop: 20,
+    borderRadius: 5,
+    padding: 10,
+  },
+  input: {
+    width: "100%",
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 5,
+  },
+  areaBnt: {
+    marginTop: 10,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    boxShadow: " 1, 10 solid",
+  },
+  bnt: {
+    width: "40%",
+    height: 50,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+  },
+  textbnt: {
+    color: "blue",
+    fontWeight: "700",
+    fontFamily: "Arial",
+  },
+
+  areaRender: {
+    width: "95%",
+    flexDirection: "row",
+    marginTop: 20,
+  },
+
+  flat: {
+    width: 5,
+    marginLeft: 10,
+    height: 400,
+    backgroundColor: "blue",
+    borderRadius: 5,
+    padding: 10,
+  },
+});
