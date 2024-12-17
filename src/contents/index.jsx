@@ -16,6 +16,7 @@ export const AuthProvider = createContext({});
 
 export default function Context({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     async function Storage() {
@@ -41,22 +42,30 @@ export default function Context({ children }) {
   }
 
   async function createUser(email, senha) {
+    setLoading(true)
     try {
       const response = await createUserWithEmailAndPassword(auth, email, senha);
       Toast.success("Conta criada com sucesso");
       setUser(response);
+     
       await createStorage(response.user);
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.log(err);
     }
   }
 
   async function Login(email, senha) {
+    setLoading(true)
     try {
       const dado = await signInWithEmailAndPassword(auth, email, senha);
       Toast.success("Bem Vindo!");
-      setUser(dado.user);
+      setUser([
+        dado.user.uid
+      ]);
       await createStorage(dado.user);
+      setLoading(false)
     } catch (err) {
       console.log(err);
     }
@@ -67,6 +76,7 @@ export default function Context({ children }) {
 
     await deleteDoc(ref)
       .then(() => {
+       
         Toast.success("Item excluido com sucesso!");
       })
 
@@ -80,6 +90,7 @@ export default function Context({ children }) {
 
     await deleteDoc(ref)
       .then(() => {
+        userId: userId,
         Toast.success("Item excluido com sucesso!");
       })
       .catch(() => {
@@ -103,6 +114,7 @@ export default function Context({ children }) {
         DeleteItemGastos,
         DeleteItemReceita,
         LogOut,
+        loading
       }}
     >
       {children}

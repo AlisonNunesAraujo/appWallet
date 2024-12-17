@@ -7,13 +7,18 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
+  ActivityIndicator
 } from "react-native";
+
+import * as Animatable from 'react-native-animatable'
+
+
 
 import { AuthProvider } from "../../contents";
 import { useContext } from "react";
 import { Toast } from "toastify-react-native";
 export default function Register() {
-  const { createUser } = useContext(AuthProvider);
+  const { createUser,loading } = useContext(AuthProvider);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -28,7 +33,10 @@ export default function Register() {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={s.conteiner}>
-        <View style={s.form}>
+        <Animatable.View 
+        animation='fadeInDown'
+        
+        style={s.form}>
           <Text style={s.title}>Crie sua conta!</Text>
 
           <TextInput
@@ -47,9 +55,13 @@ export default function Register() {
           />
 
           <TouchableOpacity style={s.bnt} onPress={Create}>
-            <Text style={s.text}>Cadatrar</Text>
+            {loading ? (
+                <ActivityIndicator size={30} color='white'/>
+            ) : (
+              <Text style={s.text}>Cadatrar</Text>
+            )}
           </TouchableOpacity>
-        </View>
+        </Animatable.View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -65,32 +77,37 @@ const s = StyleSheet.create({
   form: {
     width: "90%",
     borderRadius: 5,
-    backgroundColor: "white",
+    backgroundColor: "blue",
     height: 300,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 5,
   },
 
   title: {
     fontSize: 20,
     fontFamily: "Arial",
+    color: 'white',
   },
   input: {
     width: "90%",
     height: 50,
     borderRadius: 5,
+    color: 'white'
   },
   bnt: {
     width: "50%",
     height: 40,
     borderRadius: 5,
-    backgroundColor: "blue",
+    backgroundColor: "black",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 5,
   },
   text: {
     color: "white",
     fontWeight: "700",
     fontFamily: "Arial",
+    color: 'white',
   },
 });

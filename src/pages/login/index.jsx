@@ -8,15 +8,18 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import * as Animatable from "react-native-animatable";
 
 import { useContext } from "react";
 import { AuthProvider } from "../../contents";
 
 export default function Login() {
   const navigation = useNavigation();
-  const { Login } = useContext(AuthProvider);
+  const { Login, loading } = useContext(AuthProvider);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -24,7 +27,6 @@ export default function Login() {
   async function RendleLogin() {
     if ((email === "") | (senha === "")) {
       Toast.error("O campo não pode ser vazio!");
-      return;
     }
     Login(email, senha);
   }
@@ -33,30 +35,36 @@ export default function Login() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={s.conteiner}>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <View style={s.form}>
+        <Animatable.View animation="fadeInDown" style={s.form}>
           <Text style={s.title}>Entre na sua conta!</Text>
 
           <TextInput
             placeholder="E-Mail"
+            placeholderTextColor="white"
             value={email}
             onChangeText={setEmail}
             style={s.input}
           />
           <TextInput
             placeholder="Senha"
+            placeholderTextColor="white"
             value={senha}
             onChangeText={setSenha}
             style={s.input}
           />
 
           <TouchableOpacity style={s.bnt} onPress={RendleLogin}>
-            <Text style={s.textbnt}>Entrar</Text>
+            {loading ? (
+              <ActivityIndicator size={30} color="white" />
+            ) : (
+              <Text style={s.textbnt}>Entrar</Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text style={s.textcriar}>Criar conta!</Text>
           </TouchableOpacity>
-        </View>
+        </Animatable.View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -66,19 +74,20 @@ const s = StyleSheet.create({
   conteiner: {
     flex: 1,
     backgroundColor: "white",
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   form: {
     width: "90%",
     height: 300,
-    backgroundColor: "white",
+    backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 5,
   },
   title: {
     fontSize: 20,
-    color: "black",
+    color: "white",
     fontFamily: "Arial",
   },
   input: {
@@ -86,13 +95,14 @@ const s = StyleSheet.create({
     height: 40,
     gap: 10,
     marginBottom: 10,
+    color: "white",
   },
   bnt: {
     width: "50%",
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "blue",
+    backgroundColor: "black",
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -101,7 +111,8 @@ const s = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Arial",
   },
-  textcriar:{
-    fontFamily: 'Arial'
-  }
+  textcriar: {
+    fontFamily: "Arial",
+    color: "white",
+  },
 });

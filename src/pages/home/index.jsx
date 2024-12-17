@@ -17,7 +17,8 @@ import RenderList from "../renderList";
 
 import { AuthProvider } from "../../contents";
 import { useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+
+import * as Animatable from 'react-native-animatable'
 
 export default function Home() {
   const { user, LogOut, DeleteItemDastos, DeleteItemReceita } =
@@ -26,6 +27,9 @@ export default function Home() {
   const [dados, setDados] = useState("");
   const [lista, setLista] = useState([]);
   const [gastos, setGastos] = useState([]);
+
+
+
 
   async function addReceita() {
     if (dados === "") {
@@ -36,13 +40,18 @@ export default function Home() {
     try {
       const data = await addDoc(collection(db, "receita"), {
         valor: dados,
+        uid: user.uid
+      
       });
+      
       setDados("");
       Toast.success("Adicionado com sucesso!");
     } catch (err) {
       console.log(err);
     }
   }
+
+
 
   async function addGastos() {
     if (dados === "") {
@@ -53,7 +62,9 @@ export default function Home() {
     try {
       const data = await addDoc(collection(db, "gastos"), {
         valor: dados,
+        uid: user.uid
       });
+      
       setDados("");
       Toast.success("Adicionado com sucesso!");
     } catch (err) {
@@ -122,10 +133,11 @@ export default function Home() {
       <StatusBar backgroundColor="blue" />
 
       <View style={s.header}>
-        <Text style={s.title}>Bem Vindo!</Text>
+      
+        <Animatable.Text animation='fadeInDown'  style={s.title}>Bem Vindo!</Animatable.Text>
       </View>
 
-      <View style={s.area}>
+      <Animatable.View animation='fadeInDown' style={s.area}>
         <TextInput
           placeholder="Gastos/Entrada"
           keyboardType="numeric"
@@ -143,9 +155,9 @@ export default function Home() {
             <Text style={s.textbnt}>Gastos</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animatable.View>
 
-      <View style={s.areaRender}>
+      <Animatable.View animation='fadeInDown' style={s.areaRender}>
         <FlatList
           style={s.flat}
           data={lista}
@@ -157,7 +169,7 @@ export default function Home() {
           data={gastos}
           renderItem={({ item }) => <RenderListGastos data={item} />}
         />
-      </View>
+      </Animatable.View>
     </SafeAreaView>
   );
 }
