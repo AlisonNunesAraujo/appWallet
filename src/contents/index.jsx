@@ -11,10 +11,13 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { Toast } from "toastify-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+
 
 export const AuthProvider = createContext({});
 
 export default function Context({ children }) {
+  const navigation = useNavigation;
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false)
 
@@ -42,32 +45,37 @@ export default function Context({ children }) {
   }
 
   async function createUser(email, senha) {
+    if ((email === "") | (senha === "")) {
+      Toast.error("O campo não pode ser vazio!");
+    }
     setLoading(true)
     try {
       const response = await createUserWithEmailAndPassword(auth, email, senha);
       Toast.success("Conta criada com sucesso");
-      setUser(response);
+      setUser(response)
      
       await createStorage(response.user);
       setLoading(false)
     } catch (err) {
       setLoading(false)
-      console.log(err);
+      Toast.error('Algo deu errado!')
     }
   }
 
   async function Login(email, senha) {
+    if ((email === "") | (senha === "")) {
+      Toast.error("O campo não pode ser vazio!");
+    }
     setLoading(true)
     try {
       const dado = await signInWithEmailAndPassword(auth, email, senha);
       Toast.success("Bem Vindo!");
-      setUser([
-        dado.user.uid
-      ]);
+      setUser(dado);
       await createStorage(dado.user);
       setLoading(false)
     } catch (err) {
-      console.log(err);
+      Toast.error('Algo deu errado!')
+      setLoading(false)
     }
   }
 
@@ -90,7 +98,6 @@ export default function Context({ children }) {
 
     await deleteDoc(ref)
       .then(() => {
-        userId: userId,
         Toast.success("Item excluido com sucesso!");
       })
       .catch(() => {

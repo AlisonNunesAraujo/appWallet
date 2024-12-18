@@ -17,7 +17,7 @@ export default function NavStack() {
       <Stack.Screen 
         name="Register" 
         component={Register}
-        options={{headerTitle: 'Voltar'}} />
+        options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }

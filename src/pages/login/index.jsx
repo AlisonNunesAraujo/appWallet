@@ -25,18 +25,20 @@ export default function Login() {
   const [senha, setSenha] = useState("");
 
   async function RendleLogin() {
-    if ((email === "") | (senha === "")) {
-      Toast.error("O campo não pode ser vazio!");
-    }
+    
     Login(email, senha);
   }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={s.conteiner}>
-        <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <Animatable.View animation="fadeInDown" style={s.form}>
+        <Animatable.View animation='fadeInDown' style={s.header}>
           <Text style={s.title}>Entre na sua conta!</Text>
+        </Animatable.View>
+
+        <StatusBar backgroundColor='#363636' barStyle="light-content" />
+        <Animatable.View animation="fadeInUpBig" style={s.form}>
+          
 
           <TextInput
             placeholder="E-Mail"
@@ -48,6 +50,7 @@ export default function Login() {
           <TextInput
             placeholder="Senha"
             placeholderTextColor="white"
+            secureTextEntry
             value={senha}
             onChangeText={setSenha}
             style={s.input}
@@ -61,7 +64,7 @@ export default function Login() {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")} style={s.bntCriar}>
             <Text style={s.textcriar}>Criar conta!</Text>
           </TouchableOpacity>
         </Animatable.View>
@@ -73,22 +76,32 @@ export default function Login() {
 const s = StyleSheet.create({
   conteiner: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: '#363636',
     alignItems: "center",
     justifyContent: "center",
+  },
+  header:{
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#363636',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   form: {
-    width: "90%",
+    flex: 3,
+    width: "100%",
     height: 300,
-    backgroundColor: "blue",
+    backgroundColor: "#1C1C1C",
     alignItems: "center",
-    justifyContent: "center",
     borderRadius: 5,
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     color: "white",
     fontFamily: "Arial",
+    fontWeight: 'bold'
   },
   input: {
     width: "80%",
@@ -96,6 +109,7 @@ const s = StyleSheet.create({
     gap: 10,
     marginBottom: 10,
     color: "white",
+    marginTop: 30,
   },
   bnt: {
     width: "50%",
@@ -106,6 +120,16 @@ const s = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
+  bntCriar: {
+    width: "50%",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 5,
+    marginBottom: 10,
+    marginTop: 20,
+  },
   textbnt: {
     color: "white",
     fontWeight: "700",
@@ -113,6 +137,7 @@ const s = StyleSheet.create({
   },
   textcriar: {
     fontFamily: "Arial",
-    color: "white",
+    color: "black",
+    fontWeight: 'bold'
   },
 });

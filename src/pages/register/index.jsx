@@ -16,32 +16,39 @@ import * as Animatable from 'react-native-animatable'
 
 import { AuthProvider } from "../../contents";
 import { useContext } from "react";
-import { Toast } from "toastify-react-native";
+
+import { useNavigation } from "@react-navigation/native";
+
 export default function Register() {
   const { createUser,loading } = useContext(AuthProvider);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  const navigation = useNavigation();
+
   async function Create() {
-    if ((email === "") | (senha === "")) {
-      Toast.error("O campo não pode ser vazio!");
-    }
+    
     createUser(email, senha);
   }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={s.conteiner}>
+        <Animatable.View animation='fadeInDown' style={s.header}>
+          <Text style={s.title}>Crie sua conta!</Text>
+        </Animatable.View>
+
         <Animatable.View 
-        animation='fadeInDown'
+        animation="fadeInUpBig"
         
         style={s.form}>
-          <Text style={s.title}>Crie sua conta!</Text>
+          
 
           <TextInput
             keyboardType="email-address"
             placeholder="E-Mail"
+            placeholderTextColor='white'
             value={email}
             onChangeText={setEmail}
             style={s.input}
@@ -49,6 +56,7 @@ export default function Register() {
           <TextInput
             keyboardType="password"
             placeholder="Senha"
+            placeholderTextColor='white'
             value={senha}
             onChangeText={setSenha}
             style={s.input}
@@ -61,6 +69,10 @@ export default function Register() {
               <Text style={s.text}>Cadatrar</Text>
             )}
           </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=> navigation.goBack()}  style={s.bntVoltar}>
+            <Text style={s.textVoltar}>Voltar</Text>
+          </TouchableOpacity>
         </Animatable.View>
       </View>
     </TouchableWithoutFeedback>
@@ -70,30 +82,42 @@ export default function Register() {
 const s = StyleSheet.create({
   conteiner: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: '#363636',
     justifyContent: "center",
     alignItems: "center",
   },
+  header:{
+    width: '100%',
+    backgroundColor: '#363636',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   form: {
-    width: "90%",
+    width: "100%",
     borderRadius: 5,
-    backgroundColor: "blue",
+    backgroundColor: "#1C1C1C",
     height: 300,
-    justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
+    flex: 2,
+    borderTopEndRadius: 35,
+    borderTopLeftRadius: 35,
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontFamily: "Arial",
     color: 'white',
+    fontWeight: 'bold'
   },
   input: {
     width: "90%",
     height: 50,
     borderRadius: 5,
-    color: 'white'
+    color: 'white',
+    marginTop: 30,
+
   },
   bnt: {
     width: "50%",
@@ -103,11 +127,28 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
+    marginTop: 20,
+  },
+  bntVoltar: {
+    width: "50%",
+    height: 40,
+    borderRadius: 5,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    marginTop: 30,
   },
   text: {
     color: "white",
     fontWeight: "700",
     fontFamily: "Arial",
-    color: 'white',
+   
+  },
+  textVoltar: {
+    color: "black",
+    fontWeight: "700",
+    fontFamily: "Arial",
+    
   },
 });

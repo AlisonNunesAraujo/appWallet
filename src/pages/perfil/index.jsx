@@ -28,12 +28,12 @@ export default function Perfil() {
 const s = StyleSheet.create({
   conteiner:{
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "#696969",
     alignItems: 'center'
   },
 
   info:{
-    backgroundColor: 'black',
+ backgroundColor: "#363636",
     width: '80%',
     height: 200,
     borderRadius: 5,
