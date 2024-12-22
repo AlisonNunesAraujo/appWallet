@@ -6,26 +6,26 @@ import { useContext } from "react";
 
 import NavStack from "./stack";
 
-import NavTab from "./tab";
+import  Tab  from "./tab";
 
 export default function Priver() {
     const { signed, loading } = useContext(AuthProvider);
 
-    // if (loading) {
-    //     return (
-    //         <View
-    //             style={{
-    //                 flex: 1,
-    //                 justifyContent: "center",
-    //                 alignItems: "center",
-    //                 backgroundColor: "white",
-    //             }}
-    //         >
-    //             <ActivityIndicator size='large' color='black' />
-    //         </View>
-    //     )
+    if (loading) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: '#363636',
+                }}
+            >
+                <ActivityIndicator size='large' color='white' />
+            </View>
+        )
 
-    // }
+    }
 
-    return signed ? <NavTab /> : <NavStack />;
+    return signed ? <Tab/> : <NavStack />;
 }

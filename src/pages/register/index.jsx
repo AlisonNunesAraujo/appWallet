@@ -49,6 +49,7 @@ export default function Register() {
             keyboardType="email-address"
             placeholder="E-Mail"
             placeholderTextColor='white'
+          
             value={email}
             onChangeText={setEmail}
             style={s.input}
@@ -57,6 +58,7 @@ export default function Register() {
             keyboardType="password"
             placeholder="Senha"
             placeholderTextColor='white'
+            secureTextEntry
             value={senha}
             onChangeText={setSenha}
             style={s.input}

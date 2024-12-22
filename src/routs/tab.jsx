@@ -9,7 +9,7 @@ import Feather from "react-native-vector-icons/Feather";
 
 export default function NavTab() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{tabBarHideOnKeyboard: true}}>
       <Tab.Screen
         name="Home"
         component={Home}

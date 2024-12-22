@@ -8,18 +8,19 @@ import {
 import { auth } from "../firebase/firebaseconection";
 import { deleteDoc, doc } from "firebase/firestore";
 
-import { Toast } from "toastify-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { signOut } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
+import { Toast } from "toastify-react-native";
+
+import { showMessage } from "react-native-flash-message";
 
 export const AuthProvider = createContext({});
 
 export default function Context({ children }) {
-  const navigation = useNavigation;
+  const navigation = useNavigation();
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function Storage() {
@@ -40,42 +41,70 @@ export default function Context({ children }) {
     try {
       await AsyncStorage.setItem("@userData", JSON.stringify(user));
     } catch (error) {
-      console.error("Erro", error);
+      console.error(error);
     }
   }
 
   async function createUser(email, senha) {
     if ((email === "") | (senha === "")) {
-      Toast.error("O campo não pode ser vazio!");
+     
+      showMessage({
+        message: 'Os campos não podem estar vazio!',
+        type: 'success'
+      })
     }
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await createUserWithEmailAndPassword(auth, email, senha);
-      Toast.success("Conta criada com sucesso");
-      setUser(response)
-     
+      showMessage({
+        message: 'Conta criada!',
+        description: 'Sua conta foi criada com sucesso!',
+        type: 'success',
+        duration: 3000
+      })
+
       await createStorage(response.user);
-      setLoading(false)
+      setUser(response.user);
+      setLoading(false);
     } catch (err) {
-      setLoading(false)
-      Toast.error('Algo deu errado!')
+      setLoading(false);
+      showMessage({
+        type: 'info',
+        message: 'Algo deu errado!',
+        description: 'Não foi possivel criar a sua conta, Tente novamente!',
+        duration: 3000,
+      })
     }
   }
 
   async function Login(email, senha) {
     if ((email === "") | (senha === "")) {
-      Toast.error("O campo não pode ser vazio!");
+      showMessage({
+        type: 'info',
+        message: 'Campos vazios',
+        description: 'Os campos não podem estar vazios!'
+      })
     }
-    setLoading(true)
+    setLoading(true);
     try {
       const dado = await signInWithEmailAndPassword(auth, email, senha);
-      Toast.success("Bem Vindo!");
-      setUser(dado);
+
+      setUser(dado.user);
+      showMessage({
+        message: 'Bem Vindo!'
+      })
       await createStorage(dado.user);
-      setLoading(false)
+      setLoading(false);
+      return;
+     
     } catch (err) {
-      Toast.error('Algo deu errado!')
-      setLoading(false)
+      showMessage({
+        type: 'warning',
+        description: 'Não foi possivel Entrar em sua conta!',
+        message: 'Algo deu errado!',
+        duration: 3000,
+      })
+      setLoading(false);
     }
   }
 
@@ -84,12 +113,20 @@ export default function Context({ children }) {
 
     await deleteDoc(ref)
       .then(() => {
-       
-        Toast.success("Item excluido com sucesso!");
+        showMessage({
+          message: 'Item excluido com sucesso!',
+          type: 'success',
+          duration: 2000
+        })
+          
       })
 
       .catch(() => {
-        Toast.error("Algo deu errado!");
+        showMessage({
+          message: 'Algo deu errado!',
+          type: 'warning',
+          duration: 3000,
+        })
       });
   }
 
@@ -98,17 +135,33 @@ export default function Context({ children }) {
 
     await deleteDoc(ref)
       .then(() => {
-        Toast.success("Item excluido com sucesso!");
+        showMessage({
+          message: 'Item excluido com sucesso!',
+          type: 'success',
+          duration: 2000
+        })
       })
       .catch(() => {
-        Toast.error("Algo deu errado!");
+        showMessage({
+          message: 'Algo deu errado!',
+          type: 'warning',
+          duration: 3000,
+        })
+      
       });
   }
 
   async function LogOut() {
-    await AsyncStorage.removeItem("@userData");
-    setUser(null);
-    signOut();
+    auth.signOut().then(() => {
+      showMessage({
+        message: 'Voçe saiu da conta!',
+        type: 'info',
+        duration: 1000,
+      })
+
+      AsyncStorage.removeItem("@userData");
+      setUser(null);
+    });
   }
 
   return (
@@ -121,7 +174,7 @@ export default function Context({ children }) {
         DeleteItemGastos,
         DeleteItemReceita,
         LogOut,
-        loading
+        loading,
       }}
     >
       {children}

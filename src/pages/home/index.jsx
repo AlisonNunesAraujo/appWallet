@@ -7,30 +7,39 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Alert,
 } from "react-native";
 import { StatusBar } from "react-native";
-import { Toast } from "toastify-react-native";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase/firebaseconection";
 import RenderListGastos from "../renderListGastos";
 import RenderList from "../renderList";
-
 import { AuthProvider } from "../../contents";
 import { useContext } from "react";
-
 import * as Animatable from "react-native-animatable";
 
+
+import { showMessage } from "react-native-flash-message";
+
 export default function Home() {
-  const { user, LogOut, DeleteItemDastos, DeleteItemReceita } =
-    useContext(AuthProvider);
+  const { user, DeleteItemDastos, DeleteItemReceita } = useContext(AuthProvider);
+
+  
 
   const [dados, setDados] = useState("");
   const [lista, setLista] = useState([]);
   const [gastos, setGastos] = useState([]);
 
+
+
   async function addReceita() {
     if (dados === "") {
-      Toast.error("O campo não pode ser vazio!", "Digite algo!");
+      showMessage({
+        message: 'Campo vazio',
+        description: 'Os campos não podem estar vazios!',
+        type: 'info',
+
+      })
       return;
     }
 
@@ -39,9 +48,13 @@ export default function Home() {
         valor: dados,
         uid: user.uid,
       });
+      showMessage({
+        message: 'Item adicionado com sucesso!',
+        type: 'success',
+        duration: 3000,
+      })
 
       setDados("");
-      Toast.success("Adicionado com sucesso!");
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +62,12 @@ export default function Home() {
 
   async function addGastos() {
     if (dados === "") {
-      Toast.error("O campo não pode ser vazio", "Digite algo!");
+      showMessage({
+        message: 'Campo vazio',
+        description: 'Os campos não podem estar vazios!',
+        type: 'info',
+
+      })
       return;
     }
 
@@ -58,9 +76,14 @@ export default function Home() {
         valor: dados,
         uid: user.uid,
       });
+      showMessage({
+        message: 'Item adicionado com sucesso!',
+        type: 'success',
+        duration: 3000,
+      })
+
 
       setDados("");
-      Toast.success("Adicionado com sucesso!");
     } catch (err) {
       console.log(err);
     }
@@ -119,10 +142,6 @@ export default function Home() {
 
   async function DeleteGastos() {
     DeleteItemDastos();
-  }
-
-  async function Sair() {
-    LogOut();
   }
 
   return (
