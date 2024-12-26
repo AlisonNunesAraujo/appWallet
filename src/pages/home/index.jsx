@@ -195,6 +195,14 @@ export default function Home() {
   );
 }
 
+// Exemplo com Firestore
+// db.collection('numeros')
+//     .sum('valor')
+//     .get()
+//     .then(snapshot => {
+//         console.log('A soma é:', snapshot.data().sum);
+//     });
+
 const s = StyleSheet.create({
   conteiner: {
     flex: 1,
