@@ -1,8 +1,6 @@
 import { View,Text, StyleSheet,TouchableOpacity } from 'react-native';
-import { deleteDoc } from 'firebase/firestore';
-import { db } from '../../firebase/firebaseconection';
-import { doc } from 'firebase/firestore';
 
+import Feather from 'react-native-vector-icons/Feather'
 
 import { AuthProvider } from '../../contents';
 import { useContext } from 'react';
@@ -22,7 +20,7 @@ export default function RenderList({data}) {
     <Text style={s.texttype}>Entrada</Text>
     <Text style={s.text}>R$ {data.valor}</Text>
     <TouchableOpacity style={s.bnt} onPress={(id)=> Delete(data.id)}>
-      <Text>Excluir</Text>
+      <Feather color='black' size={20} name="trash-2"/>
     </TouchableOpacity>
    </View>
   );

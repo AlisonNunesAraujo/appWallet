@@ -9,16 +9,12 @@ import { auth } from "../firebase/firebaseconection";
 import { deleteDoc, doc } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-
-import { Toast } from "toastify-react-native";
 
 import { showMessage } from "react-native-flash-message";
 
 export const AuthProvider = createContext({});
 
 export default function Context({ children }) {
-  const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 

@@ -2,3 +2,4 @@
 
 ### Voçe pode adicionar seus gastos e entradas np *App*, 
 ### com poucas funcionalidades ainda no momento! 
+
