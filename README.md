@@ -4,4 +4,4 @@
 ### com poucas funcionalidades ainda no momento! 
 
 
-![Minha imagem]()
+![Minha imagem](https://github.com/AlisonNunesAraujo/appWallet/blob/main/assets/icon.jpeg)
