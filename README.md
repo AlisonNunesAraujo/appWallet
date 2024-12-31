@@ -1,4 +1,4 @@
-## Esse app desnvolvido por mim tem como objetivo ajudar as pessoas com controle de seus gastos!
+## Esse app desenvolvido por mim tem como objetivo ajudar as pessoas com controle de seus gastos!
 
 ### Voçe pode adicionar seus gastos e entradas no *App*, 
 ### com poucas funcionalidades ainda no momento! 
