@@ -43,6 +43,8 @@ export default function Register() {
         animation="fadeInUpBig"
         
         style={s.form}>
+
+          <TextInput placeholder="Nome" style={a.input}/>
           
 
           <TextInput
