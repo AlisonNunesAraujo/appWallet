@@ -13,28 +13,28 @@ export default function NavTab() {
       <Tab.Screen
         name="Home"
         component={Home}
-        // options={{
-        //   headerShown: false,
-        //   // tabBarIcon: ({ color, size }) => {
-        //   //   return <Feather color="black" size={25} name="home" />;
-        //   // },
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            return <Feather color="black" size={25} name="home" />;
+          },
 
-        //   tabBarLabel: ()=> null,
+          tabBarLabel: ()=> null,
           
-        // }}
+        }}
       />
       <Tab.Screen
       
         name="Perfil"
         component={Perfil}
-        // options={{ headerShown: false,
-        //     // tabBarIcon: (({color,size})=>{
-        //     //     return <Feather color='black' size={25} name="user"/>
-        //     // }),
+        options={{ headerShown: false,
+            tabBarIcon: (({color,size})=>{
+                return <Feather color='black' size={25} name="user"/>
+            }),
 
-        //     tabBarLabel: () => null,
+            tabBarLabel: () => null,
 
-        //  }}
+         }}
       />
     </Tab.Navigator>
   );

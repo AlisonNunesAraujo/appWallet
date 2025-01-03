@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase/firebaseconection";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -72,6 +72,11 @@ export default function Context({ children }) {
       })
     }
   }
+
+
+  
+
+
 
   async function Login(email, senha) {
     if ((email === "") | (senha === "")) {
