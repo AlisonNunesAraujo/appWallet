@@ -7,12 +7,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 
-import * as Animatable from 'react-native-animatable'
-
-
+import * as Animatable from "react-native-animatable";
 
 import { AuthProvider } from "../../contents";
 import { useContext } from "react";
@@ -20,7 +18,7 @@ import { useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Register() {
-  const { createUser,loading } = useContext(AuthProvider);
+  const { createUser, loading } = useContext(AuthProvider);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -28,28 +26,24 @@ export default function Register() {
   const navigation = useNavigation();
 
   async function Create() {
-    
-    createUser(email, senha);
+    createUser(email, senha,nome);
   }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={s.conteiner}>
-        <Animatable.View animation='fadeInDown' style={s.header}>
+        <Animatable.View animation="fadeInDown" style={s.header}>
           <Text style={s.title}>Crie sua conta!</Text>
         </Animatable.View>
 
-        <Animatable.View 
-        animation="fadeInUpBig"
-        
-        style={s.form}>
-          
+        <Animatable.View animation="fadeInUpBig" style={s.form}>
+
+       
 
           <TextInput
             keyboardType="email-address"
             placeholder="E-Mail"
-            placeholderTextColor='white'
-          
+            placeholderTextColor="white"
             value={email}
             onChangeText={setEmail}
             style={s.input}
@@ -57,7 +51,7 @@ export default function Register() {
           <TextInput
             keyboardType="password"
             placeholder="Senha"
-            placeholderTextColor='white'
+            placeholderTextColor="white"
             secureTextEntry
             value={senha}
             onChangeText={setSenha}
@@ -66,13 +60,16 @@ export default function Register() {
 
           <TouchableOpacity style={s.bnt} onPress={Create}>
             {loading ? (
-                <ActivityIndicator size={30} color='white'/>
+              <ActivityIndicator size={30} color="white" />
             ) : (
               <Text style={s.text}>Cadatrar</Text>
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=> navigation.goBack()}  style={s.bntVoltar}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={s.bntVoltar}
+          >
             <Text style={s.textVoltar}>Voltar</Text>
           </TouchableOpacity>
         </Animatable.View>
@@ -84,16 +81,16 @@ export default function Register() {
 const s = StyleSheet.create({
   conteiner: {
     flex: 1,
-    backgroundColor: '#363636',
+    backgroundColor: "#363636",
     justifyContent: "center",
     alignItems: "center",
   },
-  header:{
-    width: '100%',
-    backgroundColor: '#363636',
+  header: {
+    width: "100%",
+    backgroundColor: "#363636",
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   form: {
     width: "100%",
@@ -110,16 +107,15 @@ const s = StyleSheet.create({
   title: {
     fontSize: 30,
     fontFamily: "Arial",
-    color: 'white',
-    fontWeight: 'bold'
+    color: "white",
+    fontWeight: "bold",
   },
   input: {
     width: "90%",
     height: 50,
     borderRadius: 5,
-    color: 'white',
+    color: "white",
     marginTop: 30,
-
   },
   bnt: {
     width: "50%",
@@ -145,12 +141,10 @@ const s = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontFamily: "Arial",
-   
   },
   textVoltar: {
     color: "black",
     fontWeight: "700",
     fontFamily: "Arial",
-    
   },
 });
